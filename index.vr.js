@@ -1,34 +1,27 @@
 import React from 'react';
-import {
-  AppRegistry,
-  asset,
-  Pano,
-  Text,
-  View,
-} from 'react-vr';
+import {AppRegistry, View} from 'react-vr';
+import SwitchablePanoSelector from "./SwitchablePanoSelector";
 
 export default class lost_weekend_vr extends React.Component {
-  render() {
-    return (
-      <View>
-        <Pano source={asset('chess-world.jpg')}/>
-        <Text
-          style={{
-            backgroundColor: '#777879',
-            fontSize: 0.8,
-            fontWeight: '400',
-            layoutOrigin: [0.5, 0.5],
-            paddingLeft: 0.2,
-            paddingRight: 0.2,
-            textAlign: 'center',
-            textAlignVertical: 'center',
-            transform: [{translate: [0, 0, -3]}],
-          }}>
-          hello
-        </Text>
-      </View>
-    );
-  }
+    render() {
+        return (
+            <View>
+                <SwitchablePanoSelector panos={[
+                    {   id: "stage",
+                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/psb_song_1.mp4",
+                        link: "crowd",
+                        linkImage: "cam_icon_crowd.svg"
+                    },
+                    {
+                        id: "crowd",
+                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/VIRB_cathedral_psb_1.MP4",
+                        link: "stage",
+                        linkImage: "cam_icon_stage.svg"
+                    }
+                ]} />
+            </View>
+        );
+    }
 };
 
 AppRegistry.registerComponent('lost_weekend_vr', () => lost_weekend_vr);
