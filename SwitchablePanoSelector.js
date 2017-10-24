@@ -1,23 +1,38 @@
 import React from 'react';
-import {Image, VideoPano, View, VrButton, asset} from 'react-vr';
+import {Image, VideoPano, View, VrButton, asset, MediaPlayerState} from 'react-vr';
 
 export default class SwitchablePanoSelector extends React.Component {
 
     constructor(props) {
         super(props);
         console.log(props);
-        this.state = {currentPano: this.props.panos[0]};
+        this.state = {
+            currentPano: this.props.panos[0],
+            playerState: new MediaPlayerState({autoPlay:true, muted:true}),
+            time: 0
+        };
+        this.state.playerState.onTimeUpdate = (e) => {
+            this.setState({time: e.nativeEvent.currentTime});
+        }
     }
 
     switchPano(switchToPano) {
         console.log("switching to", switchToPano);
-        this.setState({currentPano: this.props.panos.find(p => p.id === switchToPano)})
+        console.log("before",this.state);
+        const currentTime = this.state.time;
+        this.setState({
+            currentPano: this.props.panos.find(p => p.id === switchToPano)
+        });
+        this.state.playerState.seekTo(currentTime);
+        // console.log("in switch",currentTime);
+        // this.state.playerState.seekTo;
+        // console.log("after",this.state)
     }
 
     render() {
         return (
             <View>
-                <VideoPano source={{uri: this.state.currentPano.source}}/>
+                <VideoPano playerState={this.state.playerState} source={{uri: this.state.currentPano.source}}/>
                 <VrButton
                     style={{width: 0.7}}
                     onClick={() => this.switchPano(this.state.currentPano.link)}>
