@@ -19,7 +19,13 @@ export default class SwitchablePanoSelector extends React.Component {
     componentDidMount() {
         console.log("mount");
         const vids = this.props.panos.forEach((p) => {
-            fetch(p.source);
+            fetch(p.source, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "video/mp4",
+                    "Range": "bytes=343277568-"
+                }
+            });
         });
     }
 
