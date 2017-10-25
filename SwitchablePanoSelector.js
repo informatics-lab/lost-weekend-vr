@@ -1,19 +1,26 @@
 import React from 'react';
-import {Image, VideoPano, View, VrButton, asset, MediaPlayerState} from 'react-vr';
+import {Image, VideoPano, View, Video, VrButton, asset, MediaPlayerState} from 'react-vr';
 
 export default class SwitchablePanoSelector extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
-        this.time = 0
+        this.time = 0;
         this.state = {
             currentPano: this.props.panos[0],
-            playerState: new MediaPlayerState({autoPlay:true}),
+            playerState: new MediaPlayerState({autoPlay:true, muted: true}),
         };
         this.state.playerState.onTimeUpdate = (e) => {
             this.time = e.nativeEvent.currentTime;
-        }
+        };
+
+    }
+
+    componentDidMount() {
+        console.log("mount");
+        const vids = this.props.panos.forEach((p) => {
+            fetch(p.source);
+        });
     }
 
     componentDidUpdate() {
