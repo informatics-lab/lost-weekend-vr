@@ -1,36 +1,14 @@
 import React from 'react';
-import {Image, VideoPano, View, Video, VrButton, asset, MediaPlayerState} from 'react-vr';
+import {Image, VideoPano, View, VrButton, Sound, asset} from 'react-vr';
 
 export default class SwitchablePanoSelector extends React.Component {
 
     constructor(props) {
         super(props);
-        this.time = 0;
         this.state = {
-            currentPano: this.props.panos[0],
-            playerState: new MediaPlayerState({autoPlay:true, muted: true}),
-        };
-        this.state.playerState.onTimeUpdate = (e) => {
-            this.time = e.nativeEvent.currentTime;
+            currentPano: this.props.panos[0]
         };
 
-    }
-
-    componentDidMount() {
-        console.log("mount");
-        const vids = this.props.panos.forEach((p) => {
-            fetch(p.source, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "video/mp4",
-                    "Range": "bytes=343277568-"
-                }
-            });
-        });
-    }
-
-    componentDidUpdate() {
-        this.state.playerState.seekTo(this.time);
     }
 
     switchPano(switchToPano) {
@@ -42,7 +20,17 @@ export default class SwitchablePanoSelector extends React.Component {
     render() {
         return (
             <View>
-                <VideoPano playerState={this.state.playerState} source={{uri: this.state.currentPano.source}}/>
+                {
+                    this.props.panos.map((p)=>{
+                        let opacity = 1.0;
+                        if(p.id === this.state.currentPano.id) {
+                            opacity = 0.0;
+                        }
+                        return (<VideoPano key={p.id} source={{uri: p.source}} style={{opacity: opacity}} muted={true}/>)
+                    })
+
+                }
+                <Sound source={{uri: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/audio/public_service_broadcasting.mp3"}} />
                 <VrButton
                     style={{width: 0.7}}
                     onClick={() => this.switchPano(this.state.currentPano.link)}>
