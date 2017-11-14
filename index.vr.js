@@ -8,13 +8,13 @@ export default class lost_weekend_vr extends React.Component {
             <View>
                 <SwitchablePanoSelector panos={[
                     {   id: "stage",
-                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/psb_song_1.mp4",
+                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/sliced/psb/virb_psb_1.m4v",
                         link: "crowd",
                         linkImage: "cam_icon_crowd.svg"
                     },
                     {
                         id: "crowd",
-                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/VIRB_cathedral_psb_1.MP4",
+                        source: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/sliced/psb/theta_psb_1.mp4",
                         link: "stage",
                         linkImage: "cam_icon_stage.svg"
                     }

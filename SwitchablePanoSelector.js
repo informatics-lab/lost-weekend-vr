@@ -1,23 +1,36 @@
 import React from 'react';
-import {Image, VideoPano, View, VrButton, asset} from 'react-vr';
+import {Image, VideoPano, View, VrButton, Sound, asset} from 'react-vr';
 
 export default class SwitchablePanoSelector extends React.Component {
 
     constructor(props) {
         super(props);
-        console.log(props);
-        this.state = {currentPano: this.props.panos[0]};
+        this.state = {
+            currentPano: this.props.panos[0]
+        };
+
     }
 
     switchPano(switchToPano) {
-        console.log("switching to", switchToPano);
-        this.setState({currentPano: this.props.panos.find(p => p.id === switchToPano)})
+        this.setState({
+            currentPano: this.props.panos.find(p => p.id === switchToPano)
+        });
     }
 
     render() {
         return (
             <View>
-                <VideoPano source={{uri: this.state.currentPano.source}}/>
+                {
+                    this.props.panos.map((p)=>{
+                        let opacity = 1.0;
+                        if(p.id === this.state.currentPano.id) {
+                            opacity = 0.0;
+                        }
+                        return (<VideoPano key={p.id} source={{uri: p.source}} style={{opacity: opacity}} muted={true}/>)
+                    })
+
+                }
+                <Sound source={{uri: "https://s3.eu-west-2.amazonaws.com/lostweekend-3d-video/audio/public_service_broadcasting.mp3"}} />
                 <VrButton
                     style={{width: 0.7}}
                     onClick={() => this.switchPano(this.state.currentPano.link)}>
